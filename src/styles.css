@@ -4,6 +4,8 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Etsy-inspired accent (coral/orange). Used for CTAs and highlights. */
+
 /*
  * Design system definition.
  *
