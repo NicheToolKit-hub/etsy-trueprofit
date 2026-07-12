@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Package, Truck, Clock, Percent, Tag, HelpCircle } from "lucide-react";
+import { Package, Truck, Clock, Percent, Tag } from "lucide-react";
 import type { ScenarioInput, OffsiteAdsRate } from "@/lib/profit";
+import { InfoTip } from "@/components/ui/InfoTip";
 
 interface Props {
   scenario: ScenarioInput;
@@ -12,20 +13,6 @@ const numberInput =
   "w-full rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/20";
 
 const label = "text-xs font-semibold uppercase tracking-wide text-muted-foreground";
-
-function InfoTip({ text }: { text: string }) {
-  return (
-    <span
-      tabIndex={0}
-      role="button"
-      aria-label={text}
-      title={text}
-      className="inline-flex h-4 w-4 cursor-help items-center justify-center rounded-full text-muted-foreground/70 hover:text-brand focus:text-brand focus:outline-none"
-    >
-      <HelpCircle size={13} />
-    </span>
-  );
-}
 
 function Field({
   id,
