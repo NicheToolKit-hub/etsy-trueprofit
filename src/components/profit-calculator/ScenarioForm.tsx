@@ -1,4 +1,5 @@
-import { Package, Truck, Clock, Percent, Tag } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Package, Truck, Clock, Percent, Tag, HelpCircle } from "lucide-react";
 import type { ScenarioInput, OffsiteAdsRate } from "@/lib/profit";
 
 interface Props {
@@ -12,6 +13,20 @@ const numberInput =
 
 const label = "text-xs font-semibold uppercase tracking-wide text-muted-foreground";
 
+function InfoTip({ text }: { text: string }) {
+  return (
+    <span
+      tabIndex={0}
+      role="button"
+      aria-label={text}
+      title={text}
+      className="inline-flex h-4 w-4 cursor-help items-center justify-center rounded-full text-muted-foreground/70 hover:text-brand focus:text-brand focus:outline-none"
+    >
+      <HelpCircle size={13} />
+    </span>
+  );
+}
+
 function Field({
   id,
   label: text,
@@ -21,6 +36,7 @@ function Field({
   onChange,
   step = "0.01",
   min = "0",
+  hint,
 }: {
   id: string;
   label: string;
@@ -30,12 +46,41 @@ function Field({
   onChange: (n: number) => void;
   step?: string;
   min?: string;
+  hint?: string;
 }) {
+  // Local string state so leading zeros / partial input like "0." don't get
+  // clobbered while typing. Sync from external value only when not focused.
+  const [text_, setText] = useState<string>(
+    Number.isFinite(value) ? String(value) : "",
+  );
+  const [focused, setFocused] = useState(false);
+  useEffect(() => {
+    if (!focused) {
+      const external = Number.isFinite(value) ? String(value) : "";
+      const parsedLocal = parseFloat(text_);
+      if (!Number.isFinite(parsedLocal) || parsedLocal !== value) {
+        setText(external);
+      }
+    }
+  }, [value, focused, text_]);
+
+  const normalize = (raw: string) => {
+    // Strip leading zeros: "050" -> "50", "0.5" -> "0.5", "" stays ""
+    if (raw === "" || raw === "-") return raw;
+    // Allow a leading "0." decimal
+    if (/^-?0\d/.test(raw)) raw = raw.replace(/^(-?)0+/, "$1");
+    if (raw === "" || raw === "-") return "0";
+    return raw;
+  };
+
   return (
     <div className="min-w-0">
-      <label htmlFor={id} className={label}>
-        {text}
-      </label>
+      <div className="flex items-center gap-1.5">
+        <label htmlFor={id} className={label}>
+          {text}
+        </label>
+        {hint && <InfoTip text={hint} />}
+      </div>
       <div className="mt-1 flex items-stretch overflow-hidden rounded-lg border border-input bg-background focus-within:border-brand focus-within:ring-2 focus-within:ring-brand/20">
         {prefix && (
           <span className="flex items-center bg-muted/60 px-2 text-sm text-muted-foreground">
@@ -48,8 +93,21 @@ function Field({
           inputMode="decimal"
           step={step}
           min={min}
-          value={Number.isFinite(value) ? value : 0}
-          onChange={(e) => onChange(parseFloat(e.target.value) || 0)}
+          value={text_}
+          onFocus={() => setFocused(true)}
+          onBlur={() => {
+            setFocused(false);
+            const n = parseFloat(text_);
+            const clean = Number.isFinite(n) ? n : 0;
+            setText(String(clean));
+            if (clean !== value) onChange(clean);
+          }}
+          onChange={(e) => {
+            const cleaned = normalize(e.target.value);
+            setText(cleaned);
+            const n = parseFloat(cleaned);
+            onChange(Number.isFinite(n) ? n : 0);
+          }}
           className="w-full min-w-0 bg-transparent px-3 py-2 text-sm outline-none"
         />
         {suffix && (
@@ -193,9 +251,12 @@ export function ScenarioForm({ scenario, onChange }: Props) {
 
       <Section icon={Percent} title="Etsy offsite ads">
         <div className="sm:col-span-2">
-          <label className={label} htmlFor={`ads-${scenario.name}`}>
-            Offsite ads fee
-          </label>
+          <div className="flex items-center gap-1.5">
+            <label className={label} htmlFor={`ads-${scenario.name}`}>
+              Offsite ads fee
+            </label>
+            <InfoTip text="Etsy advertises your listings on Google, Facebook, etc. If a buyer clicks one of those ads and orders within 30 days, Etsy charges 12% (shops over $10k/yr, mandatory) or 15% (shops under $10k/yr, optional) of the order total." />
+          </div>
           <select
             id={`ads-${scenario.name}`}
             value={scenario.offsiteAds}
