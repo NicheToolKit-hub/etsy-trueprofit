@@ -201,6 +201,7 @@ export function ScenarioForm({ scenario, onChange }: Props) {
             prefix="$"
             value={scenario.shippingCharged}
             onChange={(v) => set("shippingCharged", v)}
+          hint="Etsy charges the 6.5% transaction fee on this too, so buyer-paid shipping isn't 100% profit-neutral."
           />
         ) : (
           <Field
@@ -209,6 +210,7 @@ export function ScenarioForm({ scenario, onChange }: Props) {
             prefix="$"
             value={scenario.shippingCostYouCover}
             onChange={(v) => set("shippingCostYouCover", v)}
+          hint="Your actual postage cost per unit that you now eat because the buyer paid $0 shipping."
           />
         )}
       </Section>
@@ -246,6 +248,7 @@ export function ScenarioForm({ scenario, onChange }: Props) {
           step="1"
           value={scenario.laborMinutes}
           onChange={(v) => set("laborMinutes", v)}
+          hint="Total hands-on time to make, pack, and ship one unit. Multiplied by hourly rate to value your time."
         />
       </Section>
 
