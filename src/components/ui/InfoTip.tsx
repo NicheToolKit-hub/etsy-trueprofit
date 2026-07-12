@@ -57,8 +57,7 @@ export function InfoTip({
       {open && (
         <span
           role="tooltip"
-          className="absolute left-1/2 top-full z-50 mt-2 w-64 max-w-[80vw] -translate-x-1/2 rounded-lg border border-border bg-popover px-3 py-2 text-xs font-normal leading-snug text-popover-foreground shadow-xl"
-          style={{ color: "var(--foreground)" }}
+          className="absolute left-1/2 top-full z-50 mt-2 w-64 max-w-[80vw] -translate-x-1/2 rounded-lg border border-border bg-card px-3 py-2 text-xs font-normal leading-snug text-foreground shadow-xl"
         >
           {text}
         </span>
