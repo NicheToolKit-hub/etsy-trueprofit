@@ -82,6 +82,7 @@ function Index() {
   const [scenarioB, setScenarioB] = useState<ScenarioInput | null>(null);
   const [email, setEmail] = useState("");
   const [emailSubmitted, setEmailSubmitted] = useState(false);
+  const [billing, setBilling] = useState<"monthly" | "annual">("annual");
 
   const scenarios = useMemo(
     () => (scenarioB ? [scenarioA, scenarioB] : [scenarioA]),
@@ -291,12 +292,37 @@ function Index() {
                   </li>
                 ))}
               </ul>
-              <div className="mt-5 flex flex-wrap items-center gap-4">
+              <div className="mt-5 inline-flex rounded-full bg-white/15 p-1 text-xs font-bold backdrop-blur">
+                <button
+                  onClick={() => setBilling("monthly")}
+                  className={`rounded-full px-3 py-1.5 transition ${billing === "monthly" ? "bg-white text-brand" : "text-brand-foreground/90"}`}
+                >
+                  Monthly
+                </button>
+                <button
+                  onClick={() => setBilling("annual")}
+                  className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 transition ${billing === "annual" ? "bg-white text-brand" : "text-brand-foreground/90"}`}
+                >
+                  Annual
+                  <span className={`rounded-full px-1.5 py-0.5 text-[10px] ${billing === "annual" ? "bg-brand/15 text-brand" : "bg-white/25"}`}>
+                    Save 25%
+                  </span>
+                </button>
+              </div>
+              <div className="mt-4 flex flex-wrap items-baseline gap-2">
+                <span className="font-display text-4xl font-black tracking-tight">
+                  ${billing === "annual" ? "9" : "12"}
+                </span>
+                <span className="text-sm text-brand-foreground/85">
+                  /month{billing === "annual" ? " · billed annually ($108/yr)" : ""}
+                </span>
+              </div>
+              <div className="mt-4 flex flex-wrap items-center gap-4">
                 <button className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-2.5 text-sm font-bold text-brand shadow-md transition hover:scale-[1.02]">
-                  Upgrade to Pro — $9/mo
+                  Start 14-day free trial
                 </button>
                 <span className="text-xs text-brand-foreground/80">
-                  14-day free trial · Cancel anytime
+                  No card required · Cancel anytime
                 </span>
               </div>
             </div>
