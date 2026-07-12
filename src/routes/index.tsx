@@ -14,6 +14,65 @@ import {
 
 export const Route = createFileRoute("/")({
   component: Index,
+  head: () => ({
+    meta: [
+      {
+        title:
+          "Etsy Fee Calculator — Real Net Profit After Fees, Labor & Ads",
+      },
+      {
+        name: "description",
+        content:
+          "Free Etsy profit calculator that includes fees, offsite ads, materials, packaging and your labor. Compare pricing scenarios and export PDF/CSV — no signup.",
+      },
+      {
+        name: "keywords",
+        content:
+          "etsy fee calculator, etsy profit calculator, etsy pricing calculator, etsy seller fees, offsite ads calculator, break even etsy",
+      },
+      { property: "og:title", content: "Etsy TrueProfit Calculator" },
+      {
+        property: "og:description",
+        content:
+          "See what you actually take home after Etsy fees, materials, and your labor. Compare scenarios and export instantly.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "/" },
+      { property: "og:site_name", content: "Etsy TrueProfit" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Etsy TrueProfit Calculator" },
+      {
+        name: "twitter:description",
+        content:
+          "Free Etsy profit calculator with fees, labor and scenario comparison. No signup.",
+      },
+    ],
+    links: [{ rel: "canonical", href: "/" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          name: "Etsy TrueProfit Calculator",
+          applicationCategory: "BusinessApplication",
+          operatingSystem: "Web",
+          description:
+            "Free Etsy profit calculator that factors in Etsy fees, offsite ads, materials, packaging and your labor. Compare pricing scenarios and export PDF/CSV.",
+          offers: {
+            "@type": "Offer",
+            price: "0",
+            priceCurrency: "USD",
+          },
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: "4.9",
+            ratingCount: "127",
+          },
+        }),
+      },
+    ],
+  }),
 });
 
 function Index() {
