@@ -4,6 +4,7 @@ import { Calculator, Plus, X, Check, Sparkles, Mail, ExternalLink, Zap, ShieldCh
 import { ScenarioForm } from "@/components/profit-calculator/ScenarioForm";
 import { ProfitSummary } from "@/components/profit-calculator/ProfitSummary";
 import { ExportButtons } from "@/components/profit-calculator/ExportButtons";
+import { ShareImageButton } from "@/components/profit-calculator/ShareImageButton";
 import {
   calculateProfit,
   defaultScenario,
@@ -127,7 +128,10 @@ function Index() {
               </h1>
             </div>
           </div>
-          <ExportButtons scenarios={scenarios} />
+          <div className="flex flex-wrap items-center gap-2">
+            <ShareImageButton scenarios={scenarios} />
+            <ExportButtons scenarios={scenarios} />
+          </div>
         </div>
       </header>
 
