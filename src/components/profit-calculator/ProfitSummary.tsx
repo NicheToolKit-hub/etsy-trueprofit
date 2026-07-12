@@ -1,4 +1,5 @@
-import { TrendingUp, TrendingDown, Minus, HelpCircle } from "lucide-react";
+import { TrendingUp, TrendingDown, Minus } from "lucide-react";
+import { InfoTip } from "@/components/ui/InfoTip";
 import {
   calculateBreakEvenPrice,
   calculateProfit,
@@ -57,17 +58,7 @@ function Row({
     <div className="flex items-center justify-between gap-4 py-1.5 text-sm">
       <span className={`flex min-w-0 items-center gap-1.5 ${toneCls}`}>
         <span className="truncate">{label}</span>
-        {hint && (
-          <span
-            tabIndex={0}
-            role="button"
-            aria-label={hint}
-            title={hint}
-            className="inline-flex h-4 w-4 shrink-0 cursor-help items-center justify-center rounded-full text-muted-foreground/70 hover:text-brand focus:text-brand focus:outline-none"
-          >
-            <HelpCircle size={12} />
-          </span>
-        )}
+        {hint && <InfoTip text={hint} label={`About ${label}`} />}
       </span>
       <span
         className={`shrink-0 tabular-nums ${strong ? "font-semibold" : ""} ${toneCls}`}
