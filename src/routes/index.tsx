@@ -5,6 +5,7 @@ import { ScenarioForm } from "@/components/profit-calculator/ScenarioForm";
 import { ProfitSummary } from "@/components/profit-calculator/ProfitSummary";
 import { ExportButtons } from "@/components/profit-calculator/ExportButtons";
 import { ShareImageButton } from "@/components/profit-calculator/ShareImageButton";
+import { ProfitKitButton } from "@/components/profit-calculator/ProfitKitButton";
 import {
   calculateProfit,
   defaultScenario,
@@ -114,7 +115,7 @@ function Index() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="border-b border-border bg-card/60 backdrop-blur">
-        <div className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-4 py-5 sm:px-6">
+        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-5 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
           <div className="flex min-w-0 items-center gap-3">
             <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-brand text-brand-foreground shadow-md">
               <Calculator size={20} />
@@ -128,10 +129,11 @@ function Index() {
               </h1>
             </div>
           </div>
-          <div className="flex flex-wrap items-center gap-2">
+          <nav className="flex flex-wrap items-center gap-3 sm:gap-4 lg:gap-6">
             <ShareImageButton scenarios={scenarios} />
             <ExportButtons scenarios={scenarios} />
-          </div>
+            <ProfitKitButton scenarios={scenarios} />
+          </nav>
         </div>
       </header>
 
