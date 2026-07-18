@@ -192,15 +192,6 @@ function Index() {
           </div>
         </section>
 
-        <div
-          className={
-            scenarioB
-              ? "grid grid-cols-1 gap-6 xl:grid-cols-2"
-              : "grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_420px]"
-          }
-        >
-        </div>
-
         <div className="mb-6 rounded-2xl border border-dashed border-border bg-card/40 p-4">
           <div className="mb-2 flex items-center gap-2">
             <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
