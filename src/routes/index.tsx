@@ -85,6 +85,8 @@ function Index() {
   const [email, setEmail] = useState("");
   const [emailSubmitted, setEmailSubmitted] = useState(false);
   const [billing, setBilling] = useState<"monthly" | "annual">("annual");
+  const [sellerName, setSellerName] = useState("");
+  const [storeUrl, setStoreUrl] = useState("");
 
   const scenarios = useMemo(
     () => (scenarioB ? [scenarioA, scenarioB] : [scenarioA]),
@@ -132,7 +134,10 @@ function Index() {
           <nav className="flex flex-wrap items-center gap-3 sm:gap-4 lg:gap-6">
             <ShareImageButton scenarios={scenarios} />
             <ExportButtons scenarios={scenarios} />
-            <ProfitKitButton scenarios={scenarios} />
+            <ProfitKitButton
+              scenarios={scenarios}
+              branding={{ sellerName, storeUrl }}
+            />
           </nav>
         </div>
       </header>
