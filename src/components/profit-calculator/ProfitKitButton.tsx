@@ -23,7 +23,17 @@ function setText(doc: jsPDF, hex: string) {
   doc.setTextColor(hex);
 }
 
-function coverPage(doc: jsPDF, scenarios: ScenarioInput[]) {
+export interface KitBranding {
+  sellerName?: string;
+  storeUrl?: string;
+}
+
+function displayUrl(raw?: string) {
+  if (!raw) return "";
+  return raw.replace(/^https?:\/\//i, "").replace(/\/$/, "");
+}
+
+function coverPage(doc: jsPDF, scenarios: ScenarioInput[], b: KitBranding) {
   const W = doc.internal.pageSize.getWidth();
   const H = doc.internal.pageSize.getHeight();
   setFill(doc, SOFT);
@@ -45,12 +55,25 @@ function coverPage(doc: jsPDF, scenarios: ScenarioInput[]) {
   setText(doc, INK);
   doc.setFontSize(22);
   doc.text("Profit Summary Kit", 104, 96);
+  if (b.sellerName || b.storeUrl) {
+    setText(doc, MUTED);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    const line = [b.sellerName, displayUrl(b.storeUrl)]
+      .filter(Boolean)
+      .join(" · ");
+    doc.text(`Prepared for ${line}`, 104, 112);
+  }
 
   // Hero
   setText(doc, INK);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(38);
-  doc.text("Your real take-home", 48, 200);
+  doc.text(
+    b.sellerName ? `${b.sellerName}'s real take-home` : "Your real take-home",
+    48,
+    200,
+  );
   doc.text("on every Etsy sale.", 48, 240);
 
   setText(doc, MUTED);
@@ -104,16 +127,21 @@ function coverPage(doc: jsPDF, scenarios: ScenarioInput[]) {
   setText(doc, MUTED);
   doc.setFontSize(9);
   doc.text(
-    `Generated ${new Date().toLocaleDateString()} · etsytrueprofit.app`,
+    `Generated ${new Date().toLocaleDateString()} · ${displayUrl(b.storeUrl) || "etsytrueprofit.app"}`,
     48,
     H - 40,
   );
 }
 
-function scenarioPage(doc: jsPDF, s: ScenarioInput, label: string) {
+function scenarioPage(
+  doc: jsPDF,
+  s: ScenarioInput,
+  label: string,
+  b: KitBranding,
+) {
   const W = doc.internal.pageSize.getWidth();
   const H = doc.internal.pageSize.getHeight();
-  const b = calculateProfit(s);
+  const calc = calculateProfit(s);
   const be = calculateBreakEvenPrice(s);
 
   // Header band
@@ -122,26 +150,32 @@ function scenarioPage(doc: jsPDF, s: ScenarioInput, label: string) {
   setText(doc, "#ffffff");
   doc.setFont("helvetica", "bold");
   doc.setFontSize(11);
-  doc.text(`SCENARIO ${label}`, 48, 40);
+  doc.text(
+    b.sellerName
+      ? `${b.sellerName.toUpperCase()} · SCENARIO ${label}`
+      : `SCENARIO ${label}`,
+    48,
+    40,
+  );
   doc.setFontSize(22);
   doc.text(s.name, 48, 66);
 
   // Headline number
-  const good = b.netProfit >= 0;
+  const good = calc.netProfit >= 0;
   setText(doc, good ? SUCCESS : DANGER);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(46);
-  doc.text(fmtMoney(b.netProfit), 48, 156);
+  doc.text(fmtMoney(calc.netProfit), 48, 156);
   setText(doc, MUTED);
   doc.setFont("helvetica", "normal");
   doc.setFontSize(10);
-  doc.text(`NET PROFIT · ${fmtPct(b.marginPct)} margin`, 48, 176);
+  doc.text(`NET PROFIT · ${fmtPct(calc.marginPct)} margin`, 48, 176);
 
   // Right-side KPIs
   const kpis: [string, string][] = [
-    ["Revenue", fmtMoney(b.totalRevenue)],
-    ["Etsy fees", fmtMoney(b.totalFees)],
-    ["Costs", fmtMoney(b.totalExpenses)],
+    ["Revenue", fmtMoney(calc.totalRevenue)],
+    ["Etsy fees", fmtMoney(calc.totalFees)],
+    ["Costs", fmtMoney(calc.totalExpenses)],
     ["Break-even price", Number.isFinite(be) ? fmtMoney(be) : "—"],
   ];
   let ky = 130;
@@ -175,19 +209,19 @@ function scenarioPage(doc: jsPDF, s: ScenarioInput, label: string) {
       "Shipping charged",
       s.freeShipping ? "Free (buyer)" : fmtMoney(s.shippingCharged),
     ],
-    ["Shipping absorbed", fmtMoney(b.shippingCostAbsorbed)],
+    ["Shipping absorbed", fmtMoney(calc.shippingCostAbsorbed)],
     ["Offsite ads", s.offsiteAds === "none" ? "None" : `${s.offsiteAds}%`],
-    ["Materials", fmtMoney(b.materialsCost)],
-    ["Packaging", fmtMoney(b.packagingCostTotal)],
-    ["Labor", fmtMoney(b.laborCost)],
-    ["Listing fee", fmtMoney(b.listingFee)],
-    ["Transaction fee (6.5%)", fmtMoney(b.transactionFee)],
-    ["Processing fee (3% + $0.25)", fmtMoney(b.processingFee)],
-    ["Offsite ads fee", fmtMoney(b.offsiteAdsFee)],
-    ["— Total revenue", fmtMoney(b.totalRevenue)],
-    ["— Total fees", fmtMoney(b.totalFees)],
-    ["— Total expenses", fmtMoney(b.totalExpenses)],
-    ["Net profit", fmtMoney(b.netProfit)],
+    ["Materials", fmtMoney(calc.materialsCost)],
+    ["Packaging", fmtMoney(calc.packagingCostTotal)],
+    ["Labor", fmtMoney(calc.laborCost)],
+    ["Listing fee", fmtMoney(calc.listingFee)],
+    ["Transaction fee (6.5%)", fmtMoney(calc.transactionFee)],
+    ["Processing fee (3% + $0.25)", fmtMoney(calc.processingFee)],
+    ["Offsite ads fee", fmtMoney(calc.offsiteAdsFee)],
+    ["— Total revenue", fmtMoney(calc.totalRevenue)],
+    ["— Total fees", fmtMoney(calc.totalFees)],
+    ["— Total expenses", fmtMoney(calc.totalExpenses)],
+    ["Net profit", fmtMoney(calc.netProfit)],
   ];
 
   doc.setFontSize(11);
@@ -213,7 +247,9 @@ function scenarioPage(doc: jsPDF, s: ScenarioInput, label: string) {
     48,
     H - 50,
   );
-  doc.text("etsytrueprofit.app", W - 48, H - 50, { align: "right" });
+  doc.text(displayUrl(b.storeUrl) || "etsytrueprofit.app", W - 48, H - 50, {
+    align: "right",
+  });
 }
 
 function tipsPage(doc: jsPDF) {
@@ -277,16 +313,23 @@ function tipsPage(doc: jsPDF) {
   doc.text("etsytrueprofit.app · Free calculator · Pro plan syncs your shop", 48, H - 40);
 }
 
-export function ProfitKitButton({ scenarios }: { scenarios: ScenarioInput[] }) {
+export function ProfitKitButton({
+  scenarios,
+  branding,
+}: {
+  scenarios: ScenarioInput[];
+  branding?: KitBranding;
+}) {
   const [busy, setBusy] = useState(false);
   const onClick = async () => {
     setBusy(true);
     try {
       const doc = new jsPDF({ unit: "pt", format: "letter" });
-      coverPage(doc, scenarios);
+      const b = branding ?? {};
+      coverPage(doc, scenarios, b);
       scenarios.forEach((s, i) => {
         doc.addPage();
-        scenarioPage(doc, s, i === 0 ? "A" : "B");
+        scenarioPage(doc, s, i === 0 ? "A" : "B", b);
       });
       doc.addPage();
       tipsPage(doc);
