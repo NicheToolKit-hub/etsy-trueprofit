@@ -199,6 +199,45 @@ function Index() {
               : "grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_420px]"
           }
         >
+        </div>
+
+        <div className="mb-6 rounded-2xl border border-dashed border-border bg-card/40 p-4">
+          <div className="mb-2 flex items-center gap-2">
+            <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+              Personalize your Profit Kit PDF
+            </p>
+            <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-semibold text-muted-foreground">
+              Optional
+            </span>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <input
+              type="text"
+              value={sellerName}
+              onChange={(e) => setSellerName(e.target.value)}
+              placeholder="Your name or shop (e.g. Maya's Ceramics)"
+              className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
+            />
+            <input
+              type="url"
+              value={storeUrl}
+              onChange={(e) => setStoreUrl(e.target.value)}
+              placeholder="etsy.com/shop/yourshop"
+              className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
+            />
+          </div>
+          <p className="mt-2 text-[11px] text-muted-foreground">
+            Appears on the cover and every scenario page of your downloaded Profit Kit.
+          </p>
+        </div>
+
+        <div
+          className={
+            scenarioB
+              ? "grid grid-cols-1 gap-6 xl:grid-cols-2"
+              : "grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_420px]"
+          }
+        >
           {/* Scenario A column */}
           <div className="space-y-6">
             <div className="rounded-2xl border border-border bg-card p-6">
