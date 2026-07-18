@@ -85,6 +85,8 @@ function Index() {
   const [email, setEmail] = useState("");
   const [emailSubmitted, setEmailSubmitted] = useState(false);
   const [billing, setBilling] = useState<"monthly" | "annual">("annual");
+  const [sellerName, setSellerName] = useState("");
+  const [storeUrl, setStoreUrl] = useState("");
 
   const scenarios = useMemo(
     () => (scenarioB ? [scenarioA, scenarioB] : [scenarioA]),
@@ -132,7 +134,10 @@ function Index() {
           <nav className="flex flex-wrap items-center gap-3 sm:gap-4 lg:gap-6">
             <ShareImageButton scenarios={scenarios} />
             <ExportButtons scenarios={scenarios} />
-            <ProfitKitButton scenarios={scenarios} />
+            <ProfitKitButton
+              scenarios={scenarios}
+              branding={{ sellerName, storeUrl }}
+            />
           </nav>
         </div>
       </header>
@@ -186,6 +191,36 @@ function Index() {
             </div>
           </div>
         </section>
+
+        <div className="mb-6 rounded-2xl border border-dashed border-border bg-card/40 p-4">
+          <div className="mb-2 flex items-center gap-2">
+            <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+              Personalize your Profit Kit PDF
+            </p>
+            <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-semibold text-muted-foreground">
+              Optional
+            </span>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <input
+              type="text"
+              value={sellerName}
+              onChange={(e) => setSellerName(e.target.value)}
+              placeholder="Your name or shop (e.g. Maya's Ceramics)"
+              className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
+            />
+            <input
+              type="url"
+              value={storeUrl}
+              onChange={(e) => setStoreUrl(e.target.value)}
+              placeholder="etsy.com/shop/yourshop"
+              className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
+            />
+          </div>
+          <p className="mt-2 text-[11px] text-muted-foreground">
+            Appears on the cover and every scenario page of your downloaded Profit Kit.
+          </p>
+        </div>
 
         <div
           className={
