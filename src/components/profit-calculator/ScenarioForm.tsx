@@ -261,6 +261,29 @@ export function ScenarioForm({ scenario, onChange }: Props) {
           </select>
         </div>
       </Section>
+
+      <section>
+        <div className="mb-2 flex items-center gap-2">
+          <label className={label} htmlFor={`notes-${scenario.name}`}>
+            Scenario notes
+          </label>
+          <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-semibold text-muted-foreground">
+            Optional · shown in PDF
+          </span>
+        </div>
+        <textarea
+          id={`notes-${scenario.name}`}
+          value={scenario.notes ?? ""}
+          onChange={(e) => set("notes", e.target.value)}
+          rows={3}
+          maxLength={500}
+          placeholder="e.g. Holiday launch price with free shipping bundle. Assumes 30 min make time and Kraft mailer packaging."
+          className="w-full resize-y rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/20"
+        />
+        <p className="mt-1 text-[11px] text-muted-foreground">
+          Appears on this scenario's page in the Profit Kit PDF.
+        </p>
+      </section>
     </div>
   );
 }
