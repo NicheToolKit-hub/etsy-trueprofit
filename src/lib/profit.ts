@@ -12,6 +12,7 @@ export interface ScenarioInput {
   laborMinutes: number;
   offsiteAds: OffsiteAdsRate;
   freeShipping: boolean;
+  notes?: string;
 }
 
 export interface ProfitBreakdown {
