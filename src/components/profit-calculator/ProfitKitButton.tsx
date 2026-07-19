@@ -193,6 +193,26 @@ function scenarioPage(
 
   // Section: Breakdown table
   let y = 230;
+
+  // Optional scenario notes callout
+  if (s.notes && s.notes.trim()) {
+    const noteLines = doc.splitTextToSize(s.notes.trim(), W - 132);
+    const boxH = 32 + noteLines.length * 13;
+    setFill(doc, SOFT);
+    doc.roundedRect(48, y - 14, W - 96, boxH, 10, 10, "F");
+    setFill(doc, BRAND);
+    doc.rect(48, y - 14, 4, boxH, "F");
+    setText(doc, BRAND);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(9);
+    doc.text("NOTES", 64, y + 2);
+    setText(doc, INK);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(11);
+    doc.text(noteLines, 64, y + 18);
+    y += boxH + 12;
+  }
+
   setText(doc, INK);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(13);
