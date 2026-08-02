@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Calculator, Plus, X, Check, Sparkles, Mail, ExternalLink, Zap, ShieldCheck, Star } from "lucide-react";
+import { Plus, X, Check, Sparkles, Mail, ExternalLink, Zap, ShieldCheck, Star } from "lucide-react";
+import logoAsset from "@/assets/trueprofit-logo.png.asset.json";
 import { ScenarioForm } from "@/components/profit-calculator/ScenarioForm";
 import { ProfitSummary } from "@/components/profit-calculator/ProfitSummary";
 import { ExportButtons } from "@/components/profit-calculator/ExportButtons";
@@ -119,9 +120,13 @@ function Index() {
       <header className="border-b border-border bg-card/60 backdrop-blur">
         <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-5 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
           <div className="flex min-w-0 items-center gap-3">
-            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-brand text-brand-foreground shadow-md">
-              <Calculator size={20} />
-            </span>
+            <img
+              src={logoAsset.url}
+              alt="Etsy TrueProfit Calculator logo"
+              className="h-12 w-12 shrink-0 object-contain"
+              width={48}
+              height={48}
+            />
             <div className="min-w-0">
               <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand">
                 Etsy TrueProfit
