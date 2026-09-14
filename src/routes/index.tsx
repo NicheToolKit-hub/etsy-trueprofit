@@ -1,7 +1,9 @@
 import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Plus, X, Check, Sparkles, Mail, ExternalLink, Zap, ShieldCheck, Star } from "lucide-react";
-import logoAsset from "@/assets/trueprofit-logo.png.asset.json";
+// Lovable-hosted logo asset is unreachable outside Lovable's infra; use the
+// bundled favicon (same branding) so the logo renders on GitHub Pages.
+const logoUrl = `${import.meta.env.BASE_URL}favicon.png`;
 import { ScenarioForm } from "@/components/profit-calculator/ScenarioForm";
 import { ProfitSummary } from "@/components/profit-calculator/ProfitSummary";
 import { ExportButtons } from "@/components/profit-calculator/ExportButtons";
@@ -121,7 +123,7 @@ function Index() {
         <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-5 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
           <div className="flex min-w-0 items-center gap-3">
             <img
-              src={logoAsset.url}
+              src={logoUrl}
               alt="Etsy TrueProfit Calculator logo"
               className="h-12 w-12 shrink-0 object-contain"
               width={48}
