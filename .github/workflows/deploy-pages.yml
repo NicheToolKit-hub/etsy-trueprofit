@@ -1,5 +1,7 @@
 # Build the TanStack Start app (Vite client + SSR prerender to static assets)
-# and publish .output/public to GitHub Pages as a static site.
+# and publish dist/client to GitHub Pages as a static site.
+# (nitro is disabled in vite.config.ts, so the deployable output is
+# dist/client — not .output/public.)
 name: Deploy to GitHub Pages
 
 on:
@@ -36,13 +38,13 @@ jobs:
 
       - name: Verify static output
         run: |
-          test -f .output/public/index.html
-          test -d .output/public/assets
+          test -f dist/client/index.html
+          test -d dist/client/assets
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .output/public
+          path: dist/client
 
   deploy:
     environment:
